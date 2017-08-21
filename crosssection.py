@@ -22,30 +22,27 @@ def printData(data):
 
 def printPlot(data):
     plt.plot(data['read'])
-    plt.ylabel('Channels')
-    plt.xlabel('Reads')
+    plt.ylabel('Reads')
+    plt.xlabel('Channels')
     plt.show()
 
-def crossSection(d1, d2, i1, i2):
-    while(i1 < i2):
-        d1["read"][i1] = d1["read"][i1] - d2["read"][i1]
-        i1 += 1
-    return d1
-
-def crossSection2(d1, d2):
+def crossSection(d1, d2, th):
     shift = MIN_SHIFT
     sol = {}
     while shift < MAX_SHIFT:
-        r = applyShift(d1, d2, shift)
+        r = applyShift(d1, d2, shift, th)
         sol = compareShift(shift, r, sol)
         shift += 1
     return sol
 
-def applyShift(d1, d2, shift):
+def applyShift(d1, d2, shift, th):
     i = 0
     outp = 0
     for r in d1["read"]:
-        outp += r - d2["read"][i] + shift
+        if r < th:
+            outp += r - d2["read"][i] + shift
+        else:
+            print r
         i += 1
     return outp
 
@@ -59,3 +56,21 @@ def compareShift(shift, res, sol):
         sol["out"] = res
         return sol
     return sol
+
+def crossSectionInterval(d1, d2, i1, i2):
+    shift = MIN_SHIFT
+    sol = {}
+    while shift < MAX_SHIFT:
+        r = applyShiftInterval(d1, d2, shift, i1, i2)
+        sol = compareShift(shift, r, sol)
+        shift += 1
+    return sol
+
+def applyShiftInterval(d1, d2, shift, i1, i2):
+    i = 0
+    outp = 0
+    for r in d1["read"]:
+        if i < i1 or i > i2:
+            outp += r - d2["read"][i] + shift
+        i += 1
+    return outp
