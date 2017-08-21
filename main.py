@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import crosssection
 import json
@@ -10,8 +11,11 @@ th = float(sys.argv[3])
 data1 = crosssection.readFile(inputFile1)
 data2 = crosssection.readFile(inputFile2)
 
-dout = crosssection.crossSection(data1, data2, th)
-print json.dumps(dout)
+shift = crosssection.crossSection(data1, data2, th)
+print json.dumps(shift)
+dout = crosssection.applyShiftToData(data2, shift['shift'])
 
-crosssection.printPlot(data2)
+crosssection.saveData(dout, inputFile2)
+
+crosssection.printPlot(dout)
 #crosssection.printData(data1)

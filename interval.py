@@ -10,8 +10,11 @@ i2 = int(sys.argv[4])
 data1 = crosssection.readFile(inputFile1)
 data2 = crosssection.readFile(inputFile2)
 
-dout = crosssection.crossSectionInterval(data1, data2, i1, i2)
-print json.dumps(dout)
+shift = crosssection.crossSectionInterval(data1, data2, i1, i2)
+print json.dumps(shift)
+dout = crosssection.applyShiftToData(data2, shift['shift'])
+
+crosssection.saveData(dout, inputFile2)
 
 crosssection.printPlot(data2)
 #crosssection.printData(data1)

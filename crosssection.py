@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,11 +15,13 @@ def readFile(fname):
             data["read"].append(float(l.split("\t")[1].split("\r")[0]))
     return data
 
-def printData(data):
+def saveData(data, name):
+    file = open(str(name+"-shifted.dat"), "w+")
     i = 0
     for c in data["canal"]:
-        print str(c)+"  "+str(data["read"][i])
+        file.write(str(c)+"  "+str(data["read"][i])+"\n")
         i+=1
+    file.close()
 
 def printPlot(data):
     plt.plot(data['read'])
@@ -41,8 +44,6 @@ def applyShift(d1, d2, shift, th):
     for r in d1["read"]:
         if r < th:
             outp += r - d2["read"][i] + shift
-        else:
-            print r
         i += 1
     return outp
 
@@ -56,6 +57,15 @@ def compareShift(shift, res, sol):
         sol["out"] = res
         return sol
     return sol
+
+def applyShiftToData(data, shift):
+    dout = json.loads('{"canal": [],"read": []}')
+    i = 0
+    for r in data['read']:
+        dout['read'].append(r + shift)
+        dout['canal'].append(data['canal'][i])
+        i+=1
+    return dout
 
 def crossSectionInterval(d1, d2, i1, i2):
     shift = MIN_SHIFT
