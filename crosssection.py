@@ -23,8 +23,13 @@ def saveData(data, name):
         i+=1
     file.close()
 
-def printPlot(data):
-    plt.plot(data['read'])
+def printPlot(d1, d2):
+
+    plt.plot(d1['read'])
+    plt.ylabel('Reads')
+    plt.xlabel('Channels')
+
+    plt.plot(d2['read'])
     plt.ylabel('Reads')
     plt.xlabel('Channels')
     plt.show()

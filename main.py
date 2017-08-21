@@ -17,5 +17,5 @@ dout = crosssection.applyShiftToData(data2, shift['shift'])
 
 crosssection.saveData(dout, inputFile2)
 
-crosssection.printPlot(dout)
+crosssection.printPlot(data1, dout)
 #crosssection.printData(data1)
