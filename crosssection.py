@@ -11,8 +11,11 @@ def readFile(fname):
     with open(fname, "r") as lines:
         for l in lines:
             #print l
-            data["canal"].append(int(l.split("\t")[0]))
-            data["read"].append(float(l.split("\t")[1].split("\r")[0]))
+            sep = "\t"
+            if "M2.dat-shifted" in fname:
+                sep = "  "
+            data["canal"].append(int(l.split(sep)[0]))
+            data["read"].append(float(l.split(sep)[1].split("\r")[0]))
     return data
 
 def saveData(data, name):
@@ -48,11 +51,13 @@ def applyShift(d1, d2, shift, th):
     outp = 0
     for r in d1["read"]:
         if r < th:
+            #print str(r)+" "+str(d2["read"][i])
             outp += r - d2["read"][i] + shift
         i += 1
     return outp
 
 def compareShift(shift, res, sol):
+    #print "shift: "+str(shift)+" integral: "+str(res)
     if "out" not in sol:
         sol["shift"] = shift
         sol["out"] = res
